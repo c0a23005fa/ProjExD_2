@@ -4,6 +4,7 @@ import sys
 import time
 import pygame as pg
 
+
 # 定数定義
 WIDTH, HEIGHT = 1100, 650  
 DELTA = {
@@ -14,6 +15,7 @@ DELTA = {
 }  # キー入力に対する移動量の辞書
 
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
+
 
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
@@ -27,6 +29,7 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:  # 画面外に出たら
         tate = False
     return yoko, tate  # 画面内かどうかを返す
+
 
 def create_bomb_images_and_accs() -> tuple[list[pg.Surface], list[int]]:  
     """
@@ -43,6 +46,7 @@ def create_bomb_images_and_accs() -> tuple[list[pg.Surface], list[int]]:
         bb_imgs.append(bb_img)  # サーフェスをリストに追加
     
     return bb_imgs, bb_accs  # 爆弾画像リスト（bb_imgs）と加速度リスト（bb_accs）をタプルで返す
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")  
@@ -79,8 +83,8 @@ def main():
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が重なっていたら
             screen.blit(gob_img, (0, 0))  # ゲームオーバー画面を描画
             screen.blit(txt, [420, 280])  # テキストを描画
-            screen.blit(cry_kk_img, (360, 280))  
-            screen.blit(cry_kk_img, (730, 280))
+            screen.blit(cry_kk_img, (360, 280)) #左に泣いているこうかとん
+            screen.blit(cry_kk_img, (730, 280)) #右に泣いてるこうかとん
             pg.display.flip()  # 画面を更新
             time.sleep(5)  # 5秒待つ
             return  # ゲーム終了
@@ -88,8 +92,8 @@ def main():
         # tmrに応じて爆弾のサイズと加速度を選択
         idx = min(tmr // 500, 9)  # 500フレームごとに段階を上げる（最大9段階）
         bb_img = bb_imgs[idx]  # 爆弾のサイズ変更
-        avx = vx * bb_accs[idx]  # 爆弾の加速度変更
-        avy = vy * bb_accs[idx]  # 爆弾の加速度変更
+        avx = vx * bb_accs[idx]  # 横方向の速度の加速度変更
+        avy = vy * bb_accs[idx]  # 縦方向の速度の加速度変更
 
         key_lst = pg.key.get_pressed()  # キー入力のリストを取得
         sum_mv = [0, 0]  # こうかとんの移動量の初期化
@@ -113,6 +117,7 @@ def main():
         pg.display.update()  # 画面を更新
         tmr += 1  # タイマーをカウント
         clock.tick(50)  # フレームレートを設定
+
 
 if __name__ == "__main__":  # このファイルが直接実行されたら
     pg.init()    # Pygameの初期化
