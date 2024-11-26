@@ -4,6 +4,7 @@ import sys
 import time
 import pygame as pg
 
+# 定数定義
 WIDTH, HEIGHT = 1100, 650  
 DELTA = {
     pg.K_UP: (0, -5),
@@ -27,9 +28,11 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate  # 画面内かどうかを返す
 
-def  create_bomb_images_and_accs() -> tuple[list[pg.Surface], list[int]]:  
+def create_bomb_images_and_accs() -> tuple[list[pg.Surface], list[int]]:  
     """
     爆弾の拡大サーフェスと加速度のリストを返す
+    Returns:
+        tuple: 1つ目の要素は爆弾画像のリスト、2つ目は加速度のリスト
     """
     bb_imgs = []  
     bb_accs = [a for a in range(1, 11)]  # 加速度リスト（1から10まで）
@@ -39,7 +42,7 @@ def  create_bomb_images_and_accs() -> tuple[list[pg.Surface], list[int]]:
         pg.draw.circle(bb_img, (255, 0, 0), (10 * r, 10 * r), 10 * r)  # 円を描画
         bb_imgs.append(bb_img)  # サーフェスをリストに追加
     
-    return bb_imgs, bb_accs
+    return bb_imgs, bb_accs  # 爆弾画像リスト（bb_imgs）と加速度リスト（bb_accs）をタプルで返す
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")  
@@ -55,7 +58,7 @@ def main():
     bb_rct = bb_imgs[0].get_rect()  # 爆弾のRectを取得
     bb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  # 爆弾の初期位置
     
-    vx, vy = +5, -5
+    vx, vy = +5, -5  # 爆弾速度
     gob_img = pg.Surface((1100, 650))  # ゲームオーバー画面のサーフェス
     gob_img.set_alpha(128)  # 透過度を設定
     pg.draw.rect(gob_img, (0, 0, 0), pg.Rect(0, 0, 800, 1600))  # 黒い四角形を描画
@@ -105,7 +108,8 @@ def main():
             vx *= -1  # 逆方向に移動
         if not tate:  # 縦方向に画面外に出たら
             vy *= -1  # 逆方向に移動
-        screen.blit(bb_img, bb_rct)  # 爆弾の画像を
+        screen.blit(bb_img, bb_rct)  # 爆弾の画像を描画
+
         pg.display.update()  # 画面を更新
         tmr += 1  # タイマーをカウント
         clock.tick(50)  # フレームレートを設定
